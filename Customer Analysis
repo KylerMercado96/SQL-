@@ -32,7 +32,8 @@ LIMIT 1;
 --What is the total revenue for each product sold in January? (Revenue can be calculated using the number of products sold and the price of the products).
 
 SELECT SUM (quantity) * price AS revenue, product
-FROM BIT_DB.JanSales;
+FROM BIT_DB.JanSales
+GROUP BY product;
 
 --Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?--
 
@@ -48,4 +49,4 @@ JOIN BIT_DB.customers AS Cust
 ON FEB.orderid=cust.order_id
 WHERE Feb.Quantity>2
 AND length(orderid) = 6 
-AND orderid <> 'Order ID'
+AND orderid <> 'Order ID';
