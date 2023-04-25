@@ -116,11 +116,10 @@ AND orderid <> 'Order ID';
 
 --Which product brought in the most revenue in January and how much revenue did it bring in total?--
 
-SELECT product, 
-sum(quantity*price)
+SELECT product, SUM(quantity*price)
 FROM BIT_DB.JanSales 
 GROUP BY product
-ORDER BY sum(quantity*price) desc 
+ORDER BY SUM(quantity*price) DESC 
 LIMIT 1;
 
 
