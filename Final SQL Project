@@ -1,0 +1,52 @@
+-- In this project I analyzed data from a digital media company named Chinook. This dataset comtains 11 tables. 
+
+
+-- Show information for all customers not in the USA.--
+SELECT *
+FROM chinook.customers
+WHERE country <> 'USA';
+
+--Show only the Customers from Brazil.--
+SELECT *
+FROM chinook.customers 
+WHERE country = 'Brazil';
+
+--Find the Invoices of customers who are from Brazil.--
+SELECT cus.firstname, cus.lastname, inv.invoiceID, inv.billingcountry, inv.total
+FROM chinook.customers AS cus
+JOIN invoices AS inv ON cus.CustomerID = inv.CustomerID
+WHERE country = 'Brazil';
+
+--Show the Employees who are Sales Agents.--
+SELECT EmployeeID, FirstName, LastName, Title, ReportsTo, City, State, Country, Phone, Email
+FROM chinook.employees
+WHERE Title = 'Sales Support Agent';
+
+--Find a unique/distinct list of billing countries from the Invoice table.--
+SELECT DISTINCT BillingCountry, ROUND(SUM(Total), 2) AS Revenue
+FROM chinook.invoices
+GROUP BY BillingCountry
+ORDER BY total DESC;
+
+--Provide a query that shows the invoices associated with each sales agent.--
+SELECT emp.LastName, emp.Firstname, inv.InvoiceId
+FROM chinook.Employees emp 
+JOIN chinook.Customers cust ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv ON Inv.CustomerId = cust.CustomerId;
+
+--Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers.--
+--The CONCAT function is replaced in SQLite as || ' ' || --
+SELECT  
+cus.FirstName || ' ' ||cus.LastName AS CusFullName, 
+emp.FirstName || ' ' || emp.LastName as SalesRep,
+cus.Country,
+SUM(total) as Invoice_Total
+FROM chinook.invoices AS inv
+JOIN chinook.customers AS cus ON inv.CustomerId = cus.CustomerId
+JOIN chinook.employees AS emp ON cus.SupportRepId = emp.EmployeeId
+GROUP BY CusFullName;
+
+SELECT emp.LastName, emp.Firstname, cust.FirstName, cust.LastName, cust.Country, inv.total
+FROM chinook.employees emp 
+JOIN chinook.Customers cust ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv ON Inv.CustomerId = cust.CustomerId;
