@@ -46,7 +46,3 @@ JOIN chinook.customers AS cus ON inv.CustomerId = cus.CustomerId
 JOIN chinook.employees AS emp ON cus.SupportRepId = emp.EmployeeId
 GROUP BY CusFullName;
 
-SELECT emp.LastName, emp.Firstname, cust.FirstName, cust.LastName, cust.Country, inv.total
-FROM chinook.employees emp 
-JOIN chinook.Customers cust ON cust.SupportRepId = emp.EmployeeId
-JOIN chinook.Invoices Inv ON Inv.CustomerId = cust.CustomerId;
