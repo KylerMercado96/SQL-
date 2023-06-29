@@ -1,4 +1,4 @@
--- In this project I analyzed data from a digital media company named Chinook. This dataset comtains 11 tables. 
+-- In this project, I analyzed sales data from Chinook digital media. This dataset contains 11 tables. 
 
 
 -- Show information for all customers not in the USA.--
