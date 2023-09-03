@@ -2,92 +2,162 @@
 
 
 -- Show information for all customers not in the USA.--
+
 SELECT *
 FROM chinook.customers
 WHERE country <> 'USA';
 
 --Show only the Customers from Brazil.--
+
 SELECT *
 FROM chinook.customers 
 WHERE country = 'Brazil';
 
 --Find the Invoices of customers who are from Brazil.--
-SELECT cus.firstname, cus.lastname, inv.invoiceID, inv.billingcountry, inv.total
+
+SELECT 
+      cus.firstname 
+    , cus.lastname
+    , inv.invoiceID
+    , inv.billingcountry
+    , inv.total
 FROM chinook.customers AS cus
-JOIN invoices AS inv ON cus.CustomerID = inv.CustomerID
+JOIN invoices AS inv 
+  ON cus.CustomerID = inv.CustomerID
 WHERE country = 'Brazil';
 
 --Show the Employees who are Sales Agents.--
-SELECT EmployeeID, FirstName, LastName, Title, ReportsTo, City, State, Country, Phone, Email
+
+SELECT
+      EmployeeID
+    , FirstName
+    , LastName
+    , Title
+    , ReportsTo
+    , City
+    , State
+    , Country
+    , Phone
+    , Email
 FROM chinook.employees
 WHERE Title = 'Sales Support Agent';
 
+
 --Find a unique/distinct list of billing countries from the Invoice table.--
-SELECT DISTINCT BillingCountry, ROUND(SUM(Total), 2) AS Revenue
+
+SELECT DISTINCT 
+      BillingCountry
+    , ROUND(SUM(Total), 2) AS Revenue
 FROM chinook.invoices
 GROUP BY BillingCountry
 ORDER BY total DESC;
 
 --Provide a query that shows the invoices associated with each sales agent.--
-SELECT emp.LastName, emp.Firstname, inv.InvoiceId
+
+SELECT 
+      emp.LastName
+    , emp.Firstname
+    , inv.InvoiceId
 FROM chinook.Employees emp 
-JOIN chinook.Customers cust ON cust.SupportRepId = emp.EmployeeId
-JOIN chinook.Invoices Inv ON Inv.CustomerId = cust.CustomerId;
+JOIN chinook.Customers cust 
+  ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv 
+  ON Inv.CustomerId = cust.CustomerId;
 
 --Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers.--
 --The CONCAT function is replaced in SQLite as || ' ' || --
+
 SELECT  
-cus.FirstName || ' ' ||cus.LastName AS CusFullName, 
-emp.FirstName || ' ' || emp.LastName as SalesRep,
-cus.Country,
-SUM(total) as Invoice_Total
+      cus.FirstName || ' ' ||cus.LastName AS CusFullName
+    , emp.FirstName || ' ' || emp.LastName AS SalesRep
+    , cus.Country
+    , SUM(total) as Invoice_Total
 FROM chinook.invoices AS inv
-JOIN chinook.customers AS cus ON inv.CustomerId = cus.CustomerId
-JOIN chinook.employees AS emp ON cus.SupportRepId = emp.EmployeeId
+JOIN chinook.customers AS cus 
+  ON inv.CustomerId = cus.CustomerId
+JOIN chinook.employees AS emp 
+  ON cus.SupportRepId = emp.EmployeeId
 GROUP BY CusFullName;
 
 --How many Invoices were there in 2009?--
+
 SELECT COUNT (*)
 FROM chinook.Invoices
 WHERE InvoiceDate BETWEEN '2009-01-01' AND '2009-12-31';
 
 --What are the total sales for 2009?--
-SELECT ROUND(SUM(total), 2) AS TotalAmount
+
+SELECT 
+    ROUND(SUM(total), 2) AS TotalAmount
 FROM chinook.Invoices
 WHERE InvoiceDate BETWEEN '2009-01-01' AND '2009-12-31';
 
 --Find the purchased track name with each invoice line ID.--
-SELECT track.Name, inv.InvoiceLineID
+
+SELECT 
+      track.Name
+    , inv.InvoiceLineID
 FROM chinook.tracks AS track
-JOIN chinook.invoice_items as inv ON track.TrackID = inv.TrackID;
+JOIN chinook.invoice_items as inv 
+  ON track.TrackID = inv.TrackID;
 
 --Find the purchased track name and artist name with each invoice line ID.--
-SELECT track.Name AS Track, art.Name AS Artist, inv.InvoiceLineID
+
+SELECT 
+      track.Name AS Track
+    , art.Name AS Artist
+    , inv.InvoiceLineID
 FROM chinook.tracks AS track
-JOIN chinook.invoice_items as inv ON track.TrackID = inv.TrackID
-JOIN chinook.albums as alb ON track.AlbumID = alb.AlbumID
-JOIN chinook.artists as art ON alb.ArtistID = art.ArtistID;
+JOIN chinook.invoice_items as inv
+  ON track.TrackID = inv.TrackID
+JOIN chinook.albums as alb 
+  ON track.AlbumID = alb.AlbumID
+JOIN chinook.artists as art 
+  ON alb.ArtistID = art.ArtistID;
 
 --Create a table that includes all the Tracks, and include the Album name, Media type, and Genre.--
-SELECT track.name AS Track, alb.title AS Album_Title, med.name AS Media_Type, gen.name AS Genre
+
+SELECT 
+      track.name AS Track
+    , alb.title AS Album_Title
+    , med.name AS Media_Type
+    , gen.name AS Genre
 FROM chinook.tracks AS track
-JOIN chinook.albums AS alb ON track.albumID = alb.albumID
-JOIN chinook.media_types AS med ON track.MediaTypeID = med.MediaTypeID
-JOIN chinook.genres AS gen ON track.GenreID = gen.GenreID;
+JOIN chinook.albums AS alb 
+  ON track.albumID = alb.albumID
+JOIN chinook.media_types AS med 
+  ON track.MediaTypeID = med.MediaTypeID
+JOIN chinook.genres AS gen 
+  ON track.GenreID = gen.GenreID;
 
 --Show the total sales made by each sales agent.--
-SELECT emp.FirstName, emp.LastName, ROUND(SUM(inv.total), 2) AS "Total Sales"
+
+SELECT 
+      emp.FirstName
+    , emp.LastName
+    , ROUND(SUM(inv.total), 2) AS "Total Sales"
 FROM chinook.invoices AS inv
-JOIN chinook.customers AS cus ON inv.customerID = cus.customerID
-JOIN chinook.employees AS emp ON cus.SupportRepID = emp.employeeID
+JOIN chinook.customers AS cus 
+  ON inv.customerID = cus.customerID
+JOIN chinook.employees AS emp 
+  ON cus.SupportRepID = emp.employeeID
 GROUP BY emp.FirstName;
 
---Which sales agent made the most dollars in sales in 2009?--
-SELECT emp.FirstName, emp.LastName, ROUND(SUM(inv.total), 2) AS "Total Sales"
+--Which sales agent made the most money in sales in 2009?--
+
+SELECT 
+      emp.FirstName
+    , emp.LastName
+    , ROUND(SUM(inv.total), 2) AS "Total Sales"
 FROM chinook.invoices AS inv
-JOIN chinook.customers AS cus ON inv.customerID = cus.customerID
-JOIN chinook.employees AS emp ON cus.SupportRepID = emp.employeeID
-WHERE inv.InvoiceDate BETWEEN "2009-01-01" AND "2009-12-31"
-GROUP BY emp.FirstName
-ORDER BY "Total Sales" DESC
+JOIN chinook.customers AS cus 
+  ON inv.customerID = cus.customerID
+JOIN chinook.employees AS emp 
+  ON cus.SupportRepID = emp.employeeID
+WHERE 
+  inv.InvoiceDate BETWEEN "2009-01-01" AND "2009-12-31"
+GROUP BY 
+  emp.FirstName
+ORDER BY 
+  "Total Sales" DESC
 LIMIT 1;
