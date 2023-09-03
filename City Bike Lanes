@@ -65,20 +65,32 @@ INSERT INTO BIT_DB.CityBikeLanes values(60,2002, 2021,"Mouse",4.5,4.3,"no");
 
 --List all the bike lanes that have an average safety rating of 4.0 or higher and average safety rating for each of those bike lanes--
 
-WITH safety_avg_CTE AS (
-SELECT id, street, AVG(safetyrating) AS 'rating'
+WITH safety_avg_CTE AS 
+(
+    SELECT 
+      id
+    , street
+    , AVG(safetyrating) AS 'rating'
 FROM CityBikeLanes AS CBL
 GROUP BY id
 ORDER BY safetyrating DESC
 )
 
-SELECT id, street, rating, "Safe Lane" AS Label
+SELECT 
+      id
+    , street, rating
+    , "Safe Lane" AS Label
 FROM safety_avg_CTE
 WHERE rating >= 4.0;
 
 
 --Create a table with bike lane recommendations. --
-SELECT street, safetyrating, year_installed, AVG(safetyrating) OVER (PARTITION BY street) AS Avg_safety_rating, 
+
+SELECT 
+      street
+    , safetyrating
+    , year_installed.
+    , AVG(safetyrating) OVER (PARTITION BY street) AS Avg_safety_rating, 
 CASE   
     WHEN AVG(safetyrating) OVER (PARTITION BY street) >= 4.0 THEN "Leave As Is"
     WHEN AVG(safetyrating) OVER (PARTITION BY street) <= 2.5 THEN "Remove"
