@@ -1,5 +1,6 @@
 -- The purpose of the below CTE is to restrict the number of patients to those who are considered "active" by the hospital.--
 -- Requiremenbts are that they have been seen between 2020 and 2022 and still living.--
+
 WITH active_patients AS 
 (
     SELECT DISTINCT e.patient 
@@ -11,6 +12,7 @@ WITH active_patients AS
 ),
 
 -- The below CTE will return all the patients who recieved a flu shot in the year 2022--
+
 flu_shot_2022 AS 
 (
 SELECT patient, min(date) AS earliest_flu_shot_2022
