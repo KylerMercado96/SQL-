@@ -11,7 +11,7 @@ WITH active_patients AS
     AND pat.deathdate IS NULL
 ),
 
--- The below CTE will return all the patients who recieved a flu shot in the year 2022--
+-- The below CTE will return all the patients who received a flu shot in the year 2022--
 
 flu_shot_2022 AS 
 (
